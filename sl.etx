@@ -1,0 +1,7 @@
+use stellar_sdk::crypto::KeyPair;
+
+/// Generates a Stellar keypair (Public and Secret Keys)
+pub fn generate_stellar_keypair() -> (String, String) {
+    let keypair = KeyPair::random().unwrap();
+    (keypair.public_key().to_string(), keypair.secret_seed().to_string())
+}
