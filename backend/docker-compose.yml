@@ -1,0 +1,27 @@
+services:
+  app2:
+    image: ghcr.io/proximom/soroban-compliance-backend:latest
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    environment:  
+      - VIRTUAL_HOST=soroban-backend.duckdns.org
+      - LETSENCRYPT_HOST=soroban-backend.duckdns.org
+      - LETSENCRYPT_EMAIL=ahsan.farooq531@gmail.com
+      - VIRTUAL_PORT=4000
+      - CLIENT_MAX_BODY_SIZE=50m   # <--- allow uploads up to 50 MB
+      - UPLOAD_BASE_DIR=/usr/src/app/uploads
+      - CERT_UPLOAD_DIR=certificates
+      - APP_PUBLIC_BASE_URL=https://soroban-backend.duckdns.org
+
+    volumes:
+      - /var/www/app2/uploads:/usr/src/app/uploads:rw
+
+    networks:
+      - deploy_default
+    expose:
+      - "4000"   # expose the internal app port to the network
+
+networks:
+  deploy_default:
+    external: true
