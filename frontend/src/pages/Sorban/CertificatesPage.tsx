@@ -34,7 +34,7 @@ const CertificatesPage: React.FC = () => {
     //   <main className="flex-grow py-12 px-4">
     //         <div className="container mx-auto">
                 <div className="mx-auto">
-                    <Label className='text-3xl md:text-4xl font-heading font-bold text-center mb-8'>Certificates</Label>
+                    <Label className='text-3xl md:text-4xl font-heading font-bold text-left mb-8'>Certificates</Label>
                     <CertificatesTable files={files} />
                 </div>
     //         </div>

@@ -161,8 +161,13 @@ export default function UsersTable({files,loader,setLoader,getRegulators} : any)
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
-        <div className="min-w-[1602px]">
-          <Table className="min-w-full">
+        <div className="min-w-[10%]">
+          {files.length == 0 && 
+            <div className='min-w-[40vw] pl-[50%] pt-5 pb-5'>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-r-2"></div>
+            </div>
+          }
+          {files.length != 0 && <Table className="min-w-full">
             {/* Table Header */}
             <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
               <TableRow>
@@ -195,13 +200,6 @@ export default function UsersTable({files,loader,setLoader,getRegulators} : any)
 
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-            <TableRow>
-              {files.length == 0 && 
-                <div className='min-w-[40vw] pl-[50%] pt-5 pb-5'>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-r-2"></div>
-                </div>
-              }
-            </TableRow>
               {files?.map((order:any) => (
                 <TableRow key={order?.txHash} className="">
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
@@ -213,13 +211,13 @@ export default function UsersTable({files,loader,setLoader,getRegulators} : any)
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     {order?.companyData?.contactEmail}
                   </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    <button onClick={()=>handlePromote(order?._id,order.isRegulator)} className='w-[100%] transition-all inline-block border px-4 py-2 rounded-md cursor-pointer'>{(loader && id == order?._id) ? <div className='w-[100%] pl-[50%]'><div className="animate-spin rounded-full h-5 w-5 border-b-2 border-r-2"></div></div> : order?.isRegulator ? 'Revoke Regulator Access' : 'Promote to Regulator'}</button>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400 min-w-[200px]">
+                    <button onClick={()=>handlePromote(order?._id,order.isRegulator)} className='min-w-[100%] transition-all inline-block border px-2 py-2 rounded-md cursor-pointer'>{(loader && id == order?._id) ? <div className='w-[100%] pl-[50%]'><div className="animate-spin rounded-full h-5 w-5 border-b-2 border-r-2"></div></div> : order?.isRegulator ? 'Revoke Regulator Access' : 'Promote to Regulator'}</button>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+          </Table>}
         </div>
       </div>
     </div>

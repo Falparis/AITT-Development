@@ -113,8 +113,13 @@ export default function CertificatesTable({files} : any) {
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
-        <div className="min-w-[1602px]">
-          <Table className="min-w-full">
+        <div className="min-w-[100%]">
+          {files.length == 0 && 
+            <div className='min-w-[100%] pl-[50%] pt-5 pb-5'>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-r-2"></div>
+            </div>
+          }
+          {files.length != 0 && <Table className="min-w-full">
             {/* Table Header */}
             <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
               <TableRow>
@@ -130,12 +135,12 @@ export default function CertificatesTable({files} : any) {
                 >
                   Subject
                 </TableCell>
-                <TableCell
+                {/* <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
                   File Name
-                </TableCell>
+                </TableCell> */}
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
@@ -153,13 +158,6 @@ export default function CertificatesTable({files} : any) {
 
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              <TableRow>
-                {files.length == 0 && 
-                  <div className='min-w-[40vw] pl-[50%] pt-5 pb-5'>
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-r-2"></div>
-                  </div>
-                }
-              </TableRow>
               {files?.map((order:any) => (
                 <TableRow key={order.txHash} className="hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 transition-all" onClick={()=>order.fileUrl && window.open(order.fileUrl,"_blank")}>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
@@ -168,9 +166,9 @@ export default function CertificatesTable({files} : any) {
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     {order.subject}
                   </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  {/* <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     {order.fileName}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     {order.txHash}
                   </TableCell>
@@ -180,7 +178,7 @@ export default function CertificatesTable({files} : any) {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+          </Table>}
         </div>
       </div>
     </div>

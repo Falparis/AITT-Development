@@ -20,7 +20,8 @@ import {
 import { useSidebar } from "../context/SidebarContext";
 // import SidebarWidget from "./SidebarWidget";
 import { useAuthStore } from "../utilities/zendex/AuthStore";
-import { LogIn, LogOut, Users, Verified } from "lucide-react";
+import { Users } from "lucide-react";
+import axios from "axios";
 
 type NavItem = {
   name: string;
@@ -65,70 +66,112 @@ const AppSidebar: React.FC = () => {
   const location = useLocation();
   const {token,role} = useAuthStore();
 
+  const [files,setFiles] = useState([]);
+
+const getFiles = async() => {
+  const URL = `${import.meta.env.VITE_STELLER_BACKEND}/certificates/admin/all`
+  await axios.get(URL,{
+      headers:{
+          "Content-Type": "multipart/form-data",
+          // "Authorization": `Bearer ${token}`
+      }
+  })
+  .then((res)=>{
+      console.log("Success Response File Show : ",res);
+      setFiles(res.data.data);
+  })
+  .catch((err)=>{
+      console.log("Error Response File Show : ",err);
+  });
+}
+
+useEffect(()=>{
+    getFiles();
+},[]);
+
+const [users,setUsers] = useState({
+  regulators: [],
+  companyAdmins: []
+});
+
+const getRegulators = async() => {
+  if(token != "false"){
+    // setDataLoader(true);
+        const URL = `${import.meta.env.VITE_STELLER_BACKEND}/regulators/users-grouped`
+        await axios.get(URL,{
+            headers:{
+                // "Content-Type": "multipart/form-data",
+                "Authorization": `Bearer ${token}`
+            }
+        })
+        .then((res)=>{
+            console.log("Users : ",res.data.data);
+            
+            setUsers({
+                regulators: res.data.data.regulatorAdmins,
+                companyAdmins: res.data.data.companyAdmins
+            })
+        })
+        .catch((err)=>{
+            console.log("Error Response File Show : ",err);
+        }).finally(()=>{
+            // setDataLoader(false);
+        });
+  }
+}
+
+    useEffect(()=>{
+        getRegulators();
+    },[token]);
+
   useEffect(()=>{
     if(token == "false"){
-      setNavItems([{
-      icon: <LogIn />,
-      name: "Signin",
-      path: "/signin",
-    },
-
-    {
-      icon: <LogOut />,
-      name: "Signup",
-      path: "/signup",
-    },
-
+      setNavItems([
     {
       icon: <FileIcon />,
-      name: "Certificates",
-      path: "/certificates",
+      name: "Verification Center",
+      subItems: [
+        { name: "Verify", path: "/", pro: false },
+        { name: "Certificates", path: "/certificates", pro: false }
+      ],
     },
-
-    {
-      icon: <Verified />,
-      name: "Verify",
-      path: "/",
-    }])
+  ])
     }else{
       if(role == "super_admin"){
         setNavItems([
           {
             icon: <FileIcon />,
-            name: "Certificates",
-            path: "/certificates",
-          },
-
-          {
-            icon: <Verified />,
-            name: "Verify",
-            path: "/",
+            name: "Verification Center",
+            subItems: [
+              { name: "Verify", path: "/", pro: false },
+              { name: "Certificates", path: "/certificates", pro: false }
+            ],
           },
           {
             icon: <Users />,
             name: "Users",
-            path: "/users",
+            subItems: [
+              { name: "Regulators", path: "/users/ra", pro: false },
+              { name: "Non-Regulators", path: "/users/ca", pro: false }
+            ],
           }
       ])
       }else{
         setNavItems([
           {
             icon: <FileIcon />,
-            name: "Certificates",
-            path: "/certificates",
-          },
-
-          {
-            icon: <Verified />,
-            name: "Verify",
-            path: "/",
-          },
+            name: "Verification Center",
+            subItems: [
+              { name: "Verify", path: "/", pro: false },
+              { name: "Certificates", path: "/certificates", pro: false }
+            ],
+          }
       ])
       }
     }
   },[token,role]);
 
-  const [navItems,setNavItems] = useState([
+  const [navItems,setNavItems] : any = useState([
     // {
     //   icon: <GridIcon />,
     //   name: "Dashboard",
@@ -285,7 +328,7 @@ const AppSidebar: React.FC = () => {
                 {nav.icon}
               </span>
               {(isExpanded || isHovered || isMobileOpen) && (
-                <span className="menu-item-text">{nav.name}</span>
+                <span className="menu-item-text">{nav.name}{nav.name == "Users" ? ` (${users?.regulators?.length + users?.companyAdmins?.length})` : "" }</span>
               )}
               {(isExpanded || isHovered || isMobileOpen) && (
                 <ChevronDownIcon
@@ -345,7 +388,7 @@ const AppSidebar: React.FC = () => {
                           : "menu-dropdown-item-inactive"
                       }`}
                     >
-                      {subItem.name}
+                      {subItem.name} {subItem.name == "Certificates" && ` (${files.length})`} {subItem.name == "Regulators" ? ` (${users?.regulators?.length})` : "" } {subItem.name == "Non-Regulators" ? ` (${users?.companyAdmins?.length})` : "" }
                       <span className="flex items-center gap-1 ml-auto">
                         {subItem.new && (
                           <span
@@ -408,14 +451,14 @@ const AppSidebar: React.FC = () => {
                 className="dark:hidden"
                 src="/images/logo/Logo.png"
                 alt="Logo"
-                width={100}
+                width={80}
                 height={40}
               />
               <img
                 className="hidden dark:block"
                 src="/images/logo/LogoDark.png"
                 alt="Logo"
-                width={100}
+                width={80}
                 height={40}
               />
             </>

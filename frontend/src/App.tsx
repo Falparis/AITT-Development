@@ -38,10 +38,6 @@ export default function App() {
     }
   }, [token,role]);
 
-  useEffect(()=>{
-    
-  },[])
-
   return (
     <>
       <ToastContainer style={{zIndex: 99999999999}} />
@@ -57,7 +53,8 @@ export default function App() {
             {/* <Route path="/calendar" element={<Calendar />} /> */}
             {/* <Route path="/blank" element={<Blank />} /> */}
             <Route path="/certificates" element={<CertificatesPage />} />
-            <Route path="/users" element={role == 'super_admin' ? <UsersPage /> : <Navigate to="/" replace />} />
+            <Route path="/users/ra" element={role == 'super_admin' ? <UsersPage /> : <Navigate to="/" replace />} />
+            <Route path="/users/ca" element={role == 'super_admin' ? <UsersPage /> : <Navigate to="/" replace />} />
 
             {/* Forms */}
             {/* <Route path="/form-elements" element={<FormElements />} /> */}

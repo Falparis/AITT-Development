@@ -113,7 +113,7 @@ const VerifyPage: React.FC =  ()  => {
                         <div className=" rounded-lg shadow-md overflow-hidden mb-12 border border-[#80808060]">
                             <div className="p-6">
                                 <div className="space-y-8">
-                                    <div className="dark:bg-gray-700 border border-dashed border-gray-300 rounded-lg p-8 text-center">
+                                    <div className="dark:bg-gray-900 border border-dashed border-gray-300 rounded-lg p-8 text-center">
                                         {!uploadedFile ? (
                                             <div onDrop={handleDrop} onDragOver={handleDragOver}>
                                                 <Upload className="h-12 w-12 text-gray-700 dark:text-gray-400 mx-auto mb-4" />
@@ -139,10 +139,10 @@ const VerifyPage: React.FC =  ()  => {
 
                                                 {verificationStatus === "idle" && (
                                                     <div className='flex flex-col md:flex-row items-center justify-center gap-4'>
-                                                        <button onClick={() => handleVerify("verify")} className="border border-gray-900 hover:bg-gray-700 hover:text-gray-25 dark:text-gray-25 dark:hover:bg-gray-900 rounded-[6px] py-[0.75rem] px-[1.5rem] font-semibold transition-all inline-block text-center hover:cursor-pointer">
+                                                        {/* <button onClick={() => handleVerify("verify")} className="border border-gray-900 hover:bg-gray-700 hover:text-gray-25 dark:text-gray-25 dark:hover:bg-gray-900 rounded-[6px] py-[0.75rem] px-[1.5rem] font-semibold transition-all inline-block text-center hover:cursor-pointer">
                                                             Verify Document
-                                                        </button>
-                                                        {(role == "super_admin" || role == "regulator_admin")  && <button onClick={() =>{
+                                                        </button> */}
+                                                        {/* {(role == "super_admin" || role == "regulator_admin")  && <button onClick={() =>{
                                                             let error;
                                                             if(data.name == ""){
                                                                 setError(prev => ({...prev,name: "Enter Name"}));
@@ -156,7 +156,7 @@ const VerifyPage: React.FC =  ()  => {
                                                             handleVerify("upload");
                                                         }} className="border border-gray-900 hover:bg-gray-700 hover:text-gray-25 dark:text-gray-25 dark:hover:bg-gray-900 rounded-[6px] py-[0.75rem] px-[1.5rem] font-semibold transition-all inline-block text-center hover:cursor-pointer">
                                                             Upload Document
-                                                        </button>}
+                                                        </button>} */}
                                                     </div>
                                                 )}
 
@@ -178,7 +178,7 @@ const VerifyPage: React.FC =  ()  => {
                                                                 setUploadedFile(null)
                                                                 setVerificationStatus("idle")
                                                             }}
-                                                            className="border border-gray-900 hover:bg-gray-700 hover:text-gray-25 dark:text-gray-25 dark:hover:bg-gray-900 rounded-[6px] py-[0.75rem] px-[1.5rem] font-semibold transition-all inline-block text-center hover:cursor-pointer"
+                                                            className="border border-gray-900 hover:bg-gray-700 hover:text-gray-25 dark:bg-gray-700 dark:text-gray-25 dark:hover:bg-gray-50 dark:hover:text-gray-700 rounded-[6px] py-[0.75rem] px-[1.5rem] font-semibold transition-all inline-block text-center hover:cursor-pointer"
                                                         >
                                                             Upload another document
                                                         </button>
@@ -205,6 +205,26 @@ const VerifyPage: React.FC =  ()  => {
                                         setError(prev => ({...prev,subject: ""}));
                                     }}/>
                                 </div>
+                            </div>
+                            <div className='w-full p-6 flex items-end justify-end gap-4'>
+                                <button onClick={() => handleVerify("verify")} className="border border-gray-900 hover:bg-gray-700 hover:text-gray-25 dark:bg-gray-700 dark:text-gray-25 dark:hover:bg-gray-50 dark:hover:text-gray-700 rounded-[6px] py-[0.75rem] px-[1.5rem] font-semibold transition-all inline-block text-center hover:cursor-pointer">
+                                    Verify
+                                </button>
+                                {(role == "super_admin" || role == "regulator_admin")  && <button onClick={() =>{
+                                    let error;
+                                    if(data.name == ""){
+                                        setError(prev => ({...prev,name: "Enter Name"}));
+                                        error = true;
+                                    }
+                                    if(data.subject == ""){
+                                        setError(prev => ({...prev,subject: "Enter Subject"}));
+                                        error = true;
+                                    }
+                                    if(error == true) return; 
+                                    handleVerify("upload");
+                                }} className="border border-gray-900 hover:bg-gray-700 hover:text-gray-25 dark:bg-gray-700 dark:text-gray-25 dark:hover:bg-gray-50 dark:hover:text-gray-700 rounded-[6px] py-[0.75rem] px-[1.5rem] font-semibold transition-all inline-block text-center hover:cursor-pointer">
+                                    Add
+                                </button>}
                             </div>
                         </div>
                     </div>
